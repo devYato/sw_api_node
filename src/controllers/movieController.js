@@ -1,5 +1,5 @@
 const Movie = require('../models/movie');
-
+const mongoose = require('mongoose');
 
 exports.createMovie = async (req, res) => {
     const movie = new Movie({
@@ -18,9 +18,26 @@ exports.getMovies = async (req, res) => {
 };
 
 exports.deleteMovies = async (req, res) => {
-    const movie = await Movie.findByIdAndRemove(req.params.id)
-    return res.send(movie)
+    const { id } = req.params;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).send('Invalid ID');
+    }
+
+    try {
+        const movie = await Movie.findByIdAndDelete(id);
+
+        if (!movie) {
+            return res.status(404).send('Movie Not Found!');
+        }
+
+        return res.send(movie);
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send('Server Error!');
+    }
 }
+
 
 exports.updateMovies = async(req, res) => {
     const movie = await Movie.findByIdAndUpdate(req.params.id, {
