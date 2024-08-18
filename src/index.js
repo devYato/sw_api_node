@@ -19,4 +19,4 @@ app.use('/', movieRoutes);
 const port = process.env.PORT;
 app.listen(port, () =>{
     console.log(`Application app listening on port ${port}`);
-})
+});
