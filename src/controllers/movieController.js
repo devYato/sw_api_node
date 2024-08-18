@@ -12,6 +12,7 @@ exports.createMovie = async (req, res) => {
     res.send(movie);
 };
 
-exports.getMovies = (req, res) => {
-    res.send("Hello World");
+exports.getMovies = async (req, res) => {
+    const movies = await Movie.find()
+    res.send(movies)
 };
